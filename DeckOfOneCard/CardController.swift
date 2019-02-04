@@ -6,7 +6,7 @@
 //  Copyright © 2019 RYAN GREENBURG. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class CardController {
     //CRUD
@@ -48,5 +48,27 @@ class CardController {
             }
         }
         dataTask.resume()
+    }
+    
+    static func image(forURL urlString: String, completion: @escaping (UIImage?) -> Void) {
+        // Create URL
+        guard let url = URL(string: urlString) else { return print("Error creating image URL")}
+        // Data Task
+        let imageDataTask = URLSession.shared.dataTask(with: url) { (data, _, error) in
+            if let imageError = error {
+                print("Error retrieving image: \(imageError.localizedDescription)")
+                completion(nil)
+            }
+            guard let data = data, let image = UIImage(data: data) else {
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
+                return
+            }
+            DispatchQueue.main.async {
+                completion(image)
+            }
+        }
+        imageDataTask.resume()
     }
 }

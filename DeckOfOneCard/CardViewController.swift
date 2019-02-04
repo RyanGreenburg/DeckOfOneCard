@@ -10,21 +10,23 @@ import UIKit
 
 class CardViewController: UIViewController {
 
+    @IBOutlet weak var cardImageView: UIImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func drawCard() {
+        CardController.drawCard(numberOfCards: 1) { (cards) in
+            let card = cards[0]
+            CardController.image(forURL: card.image, completion: { (cardImage) in
+                guard let image = cardImage else { return }
+                self.cardImageView.image = image
+            })
+        }
     }
-    */
-
+    
+    @IBAction func drawCardButtonTapped(_ sender: Any) {
+        drawCard()
+    }
 }
